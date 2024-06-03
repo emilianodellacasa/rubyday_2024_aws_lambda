@@ -1,0 +1,27 @@
+service: HTTPtoSMS
+frameworkVersion: '3'
+
+plugins:
+  serverless-ruby-layer
+
+provider:
+  name: aws
+  region: eu-west-1
+  endpointType: REGIONAL
+  timeout: 30
+  memorySize: 1024
+  architecture: x86_64
+  deploymentMethod: direct
+
+functions:
+  send:
+    handler: lambda_function.rb
+    ephemeralStorageSize: 1024
+    environment:
+      RUBY_YJIT_ENABLE: 1
+    events:
+      - http:
+        path: send
+        method: post
+        cors: true
+
